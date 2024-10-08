@@ -13,7 +13,7 @@ class QuestionController extends Controller
 
         $attributes = $request->validate([
             'question' => [
-                're',
+                'required',
                 'min:10',
                 function (string $attribute, mixed $value, Closure $fail) {
                     if (substr($value, -1) != '?') {
