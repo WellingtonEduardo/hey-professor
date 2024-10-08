@@ -2,10 +2,7 @@
 
 use App\Models\User;
 
-use function Pest\Laravel\actingAs;
-use function Pest\Laravel\assertDatabaseCount;
-use function Pest\Laravel\assertDatabaseHas;
-use function Pest\Laravel\post;
+use function Pest\Laravel\{actingAs, assertDatabaseCount, assertDatabaseHas, post};
 
 it(
     'should be able to create a new question bigger than 255 characters',
@@ -25,7 +22,7 @@ it(
         $request->assertRedirect(route('dashboard'));
         assertDatabaseCount('questions', 1);
         assertDatabaseHas('questions', [
-            'question' => str_repeat('*', 260) . '?'
+            'question' => str_repeat('*', 260) . '?',
         ]);
     }
 );
@@ -49,10 +46,8 @@ it(
         );
         assertDatabaseCount('questions', 0);
 
-
     }
 );
-
 
 it(
     'should have at least 10 characters',
