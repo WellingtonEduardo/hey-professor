@@ -1,9 +1,22 @@
 <?php
 
 use App\Http\Controllers\{ProfileController, QuestionController};
-use Illuminate\Support\Facades\Route;
+use App\Models\User;
+use Illuminate\Support\Facades\{Auth, Route};
 
 Route::get('/', function () {
+
+    if (app()->isLocal()) {
+
+        $user = User::find(1);
+
+        if ($user) {
+            Auth::login($user);
+
+            return to_route('dashboard');
+        }
+    }
+
     return view('welcome');
 });
 
