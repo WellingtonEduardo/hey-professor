@@ -11,5 +11,16 @@
             <x-btn.primary>Save</x-btn.primary>
             <x-btn.reset>Cancel</x-btn.reset>
         </x-form>
+
+        <hr class="my-4 border-dashed border-gray-700">
+
+        <div class="mb-2 font-bold uppercase dark:text-gray-400">Lista de perguntas</div>
+
+        <div class="space-y-4 dark:text-gray-400">
+            @foreach ($questions as $item)
+                <x-question :question="$item" />
+            @endforeach
+        </div>
+
     </x-container>
 </x-app-layout>
