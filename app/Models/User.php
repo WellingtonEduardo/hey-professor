@@ -45,4 +45,18 @@ class User extends Authenticatable implements MustVerifyEmail
             'password'          => 'hashed',
         ];
     }
+
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+    public function like(Question $question)
+    {
+        $this->votes()->create([
+            'question_id' => $question->id,
+            'like'        => 1,
+            'unlike'      => 0,
+        ]);
+    }
 }
