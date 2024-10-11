@@ -13,7 +13,7 @@ it(
 
         $question = Question::factory()->create();
 
-        post(route('question.like', $question));
+        post(route('question.like', $question))->assertRedirect();
 
         assertDatabaseHas('votes', [
             'question_id' => $question->id,
