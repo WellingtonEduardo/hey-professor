@@ -31,7 +31,7 @@ it(
     'should check if ends with question mark ?',
     function () {
         // Arrange :: preparar
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = User::factory()->create();
         actingAs($user);
 
