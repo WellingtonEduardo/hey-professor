@@ -28,6 +28,27 @@ it(
 );
 
 it(
+    'should create as a draft all the time',
+    function () {
+        // Arrange :: preparar
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+        actingAs($user);
+
+        // Act :: agir
+        post(route('question.store'), [
+            'question' => str_repeat('*', 260) . '?',
+        ]);
+
+        // Assert :: verificar
+        assertDatabaseHas('questions', [
+            'question' => str_repeat('*', 260) . '?',
+            'draft'    => true,
+        ]);
+    }
+);
+
+it(
     'should check if ends with question mark ?',
     function () {
         // Arrange :: preparar
