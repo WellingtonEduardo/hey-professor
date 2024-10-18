@@ -94,3 +94,13 @@ it(
 
     }
 );
+
+it(
+    'only authenticated users can create a new question',
+    function () {
+        post(route('question.store'), [
+            'question' => str_repeat('*', 40) . '?',
+        ])
+            ->assertRedirect(route('login'));
+    }
+);
