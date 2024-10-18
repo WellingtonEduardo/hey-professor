@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Question;
 use Closure;
-use Illuminate\Http\{Request};
+use Illuminate\Http\{RedirectResponse, Request};
 
 class QuestionController extends Controller
 {
-    public function store(Request $request)
+    public function index(Request $request)
+    {
+
+        return view('question.index', [
+            'questions' => Question::where('created_by', auth()->id())->get(),
+        ]);
+    }
+
+    public function store(Request $request): RedirectResponse
     {
 
         $request->validate([
@@ -26,6 +35,6 @@ class QuestionController extends Controller
             'question' => $request->question,
         ]);
 
-        return to_route('dashboard');
+        return back();
     }
 }

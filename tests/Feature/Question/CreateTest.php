@@ -19,7 +19,7 @@ it(
         ]);
 
         // Assert :: verificar
-        $request->assertRedirect(route('dashboard'));
+        $request->assertRedirect();
         assertDatabaseCount('questions', 1);
         assertDatabaseHas('questions', [
             'question' => str_repeat('*', 260) . '?',
