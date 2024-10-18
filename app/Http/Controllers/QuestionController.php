@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Question;
 use Closure;
 use Illuminate\Http\{Request};
 
@@ -11,7 +10,7 @@ class QuestionController extends Controller
     public function store(Request $request)
     {
 
-        $attributes = $request->validate([
+        $request->validate([
             'question' => [
                 'required',
                 'min:10',
@@ -20,10 +19,12 @@ class QuestionController extends Controller
                         $fail('Are you sure that is a question? It is missing the question mark in the end.');
                     }
                 }, ],
-
         ]);
 
-        Question::query()->create(array_merge($attributes, ['draft' => true]));
+        user()->questions()->create([
+            'draft'    => true,
+            'question' => $request->question,
+        ]);
 
         return to_route('dashboard');
     }

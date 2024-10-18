@@ -5,13 +5,15 @@ use App\Models\{Question, User};
 use function Pest\Laravel\{actingAs, put};
 
 it(
-    'should be able tio publish a question',
+    'should be able to publish a question',
     function () {
         /** @var User $user */
         $user = User::factory()->create();
         actingAs($user);
 
-        $question = Question::factory()->create(['draft' => true]);
+        $question = Question::factory()
+        ->for($user, 'createdBy')
+        ->create(['draft' => true]);
 
         put(route('question.publish', $question))
             ->assertRedirect();
@@ -20,6 +22,31 @@ it(
 
         expect($question)
             ->draft->toBeFalse();
+
+    }
+);
+
+it(
+    'should make sure that only the person who has created the question can publish the question',
+    function () {
+        /** @var User $rightUser */
+        $rightUser = User::factory()->create();
+
+        /** @var User $wrongUser */
+        $wrongUser = User::factory()->create();
+
+        $question = Question::factory()
+            ->create(['draft' => true, 'created_by' => $rightUser->id]);
+
+        actingAs($wrongUser);
+
+        put(route('question.publish', $question))
+            ->assertForbidden();
+
+        actingAs($rightUser);
+
+        put(route('question.publish', $question))
+            ->assertRedirect();
 
     }
 );
