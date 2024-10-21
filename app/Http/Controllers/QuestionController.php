@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Question;
 use Closure;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\{RedirectResponse, Request};
 
 class QuestionController extends Controller
 {
-    public function index()
+    public function index(): View
     {
 
         return view('question.index', [
@@ -39,9 +40,11 @@ class QuestionController extends Controller
         return back();
     }
 
-    public function edit(Question $question): void
+    public function edit(Question $question): View
     {
+        $this->authorize('edit', $question);
 
+        return view('question.edit', compact('question'));
     }
 
     public function destroy(Question $question): RedirectResponse
