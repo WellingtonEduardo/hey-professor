@@ -19,10 +19,31 @@ it(
         ]);
 
         // Assert :: verificar
-        $request->assertRedirect(route('dashboard'));
+        $request->assertRedirect();
         assertDatabaseCount('questions', 1);
         assertDatabaseHas('questions', [
             'question' => str_repeat('*', 260) . '?',
+        ]);
+    }
+);
+
+it(
+    'should create as a draft all the time',
+    function () {
+        // Arrange :: preparar
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+        actingAs($user);
+
+        // Act :: agir
+        post(route('question.store'), [
+            'question' => str_repeat('*', 260) . '?',
+        ]);
+
+        // Assert :: verificar
+        assertDatabaseHas('questions', [
+            'question' => str_repeat('*', 260) . '?',
+            'draft'    => true,
         ]);
     }
 );
@@ -71,5 +92,15 @@ it(
         );
         assertDatabaseCount('questions', 0);
 
+    }
+);
+
+it(
+    'only authenticated users can create a new question',
+    function () {
+        post(route('question.store'), [
+            'question' => str_repeat('*', 40) . '?',
+        ])
+            ->assertRedirect(route('login'));
     }
 );
