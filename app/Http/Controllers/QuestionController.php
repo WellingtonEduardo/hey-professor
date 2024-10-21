@@ -8,7 +8,7 @@ use Illuminate\Http\{RedirectResponse, Request};
 
 class QuestionController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
 
         return view('question.index', [
@@ -34,6 +34,15 @@ class QuestionController extends Controller
             'draft'    => true,
             'question' => $request->question,
         ]);
+
+        return back();
+    }
+
+    public function destroy(Question $question): RedirectResponse
+    {
+        $this->authorize('destroy', $question);
+
+        $question->delete();
 
         return back();
     }
