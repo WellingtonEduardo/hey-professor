@@ -14,6 +14,7 @@ class QuestionController extends Controller
         return view('question.index', [
             'questions' => Question::where('created_by', auth()->id())->get(),
         ]);
+
     }
 
     public function store(Request $request): RedirectResponse
@@ -36,6 +37,11 @@ class QuestionController extends Controller
         ]);
 
         return back();
+    }
+
+    public function edit(Question $question): void
+    {
+
     }
 
     public function destroy(Question $question): RedirectResponse
