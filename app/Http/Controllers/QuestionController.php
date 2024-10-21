@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Question;
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\{RedirectResponse, Request};
+use Illuminate\Http\{RedirectResponse};
 
 class QuestionController extends Controller
 {
@@ -18,10 +18,10 @@ class QuestionController extends Controller
 
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(): RedirectResponse
     {
 
-        $request->validate([
+        request()->validate([
             'question' => [
                 'required',
                 'min:10',
@@ -34,7 +34,7 @@ class QuestionController extends Controller
 
         user()->questions()->create([
             'draft'    => true,
-            'question' => $request->question,
+            'question' => request()->question,
         ]);
 
         return back();
@@ -50,6 +50,17 @@ class QuestionController extends Controller
     public function update(Question $question): RedirectResponse
     {
         $this->authorize('update', $question);
+
+        request()->validate([
+            'question' => [
+                'required',
+                'min:10',
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if (substr($value, -1) != '?') {
+                        $fail('Are you sure that is a question? It is missing the question mark in the end.');
+                    }
+                }, ],
+        ]);
 
         $question->question = request()->question;
         $question->save();
