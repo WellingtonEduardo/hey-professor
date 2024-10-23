@@ -55,6 +55,10 @@
                                     </button>
                                 </x-form>
 
+                                <a href="{{ route('question.edit', $item) }}" class="text-blue-500 hover:underline">
+                                    Editar
+                                </a>
+
                             </x-table.td>
                         </x-table.tr>
                     @endforeach
