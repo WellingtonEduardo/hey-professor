@@ -20,9 +20,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['verified', 'auth'])->group(function () {
 
-Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     #region Question routes
     Route::get('/question', [QuestionController::class, 'index'])->name('question.index');
