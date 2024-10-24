@@ -20,6 +20,11 @@ class QuestionPolicy
         return $question->draft && $question->createdBy()->is($user);
     }
 
+    public function arquive(User $user, Question $question): bool
+    {
+        return $question->createdBy()->is($user);
+    }
+
     public function destroy(User $user, Question $question): bool
     {
         return $question->createdBy()->is($user);
