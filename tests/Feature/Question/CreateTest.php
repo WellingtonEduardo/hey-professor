@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\{Question, User};
 
 use function Pest\Laravel\{actingAs, assertDatabaseCount, assertDatabaseHas, post};
 
@@ -102,5 +102,20 @@ it(
             'question' => str_repeat('*', 40) . '?',
         ])
             ->assertRedirect(route('login'));
+    }
+);
+
+it(
+    'question should be unique',
+    function () {
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+        actingAs($user);
+        Question::factory()->create(['question' => 'ja foi tudo certo?']);
+
+        post(route('question.store'), [
+            'question' => 'ja foi tudo certo?' ,
+        ])->assertSessionHasErrors(['question' => 'A pergunta já existe!']);
+
     }
 );
