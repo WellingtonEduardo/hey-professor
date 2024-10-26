@@ -11,9 +11,11 @@ class QuestionController extends Controller
 {
     public function index(): View
     {
+        $questions = Question::withTrashed()->where('created_by', auth()->id())->get();
 
         return view('question.index', [
-            'questions' => Question::where('created_by', auth()->id())->get(),
+            'questions'         => $questions->whereNull('deleted_at'),
+            'archivedQuestions' => $questions->whereNotNull('deleted_at'),
         ]);
 
     }
