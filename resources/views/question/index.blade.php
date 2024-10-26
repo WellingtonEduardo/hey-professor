@@ -13,10 +13,10 @@
         </x-form>
 
 
-        <hr class="my-4 border-dashed border-gray-700">
+        <hr class="my-6 border-dashed border-gray-700">
 
         <div class="mb-2 font-bold uppercase dark:text-gray-400">
-            Drafts
+            DRAFTS
         </div>
 
         <div class="space-y-4 dark:text-gray-400">
@@ -43,7 +43,7 @@
 
                             <x-table.td>
 
-                                <x-form :action="route('question.destroy', $item)" delete>
+                                <x-form :action="route('question.destroy', $item)" delete onsubmit="return confirm('Tem certeza?')">
                                     <button type="submit" class="text-red-500 hover:underline">
                                         Deletar
                                     </button>
@@ -69,11 +69,10 @@
 
 
 
-
-        <hr class="my-4 border-dashed border-gray-700">
+        <hr class="my-6 border-dashed border-gray-700">
 
         <div class="mb-2 font-bold uppercase dark:text-gray-400">
-            My Question
+            MY QUESTIONS
         </div>
 
         <div class="space-y-4 dark:text-gray-400">
@@ -99,12 +98,19 @@
                             </x-table.td>
 
                             <x-table.td>
-                                <x-form :action="route('question.destroy', $item)" delete>
+
+                                <x-form :action="route('question.destroy', $item)" delete onsubmit="return confirm('Tem certeza?')">
                                     <button type="submit" class="text-red-500 hover:underline">
                                         Deletar
                                     </button>
                                 </x-form>
-                                //botao despublicar
+
+                                <x-form :action="route('question.archive', $item)" patch>
+                                    <button type="submit" class="text-blue-500 hover:underline">
+                                        Arquive
+                                    </button>
+                                </x-form>
+
                             </x-table.td>
                         </x-table.tr>
                     @endforeach
@@ -112,6 +118,57 @@
 
             </x-table>
         </div>
+
+
+
+        <hr class="my-6 border-dashed border-gray-700">
+
+        <div class="mb-2 font-bold uppercase dark:text-gray-400">
+            ARCHIVED QUESTIONS
+        </div>
+
+        <div class="space-y-4 dark:text-gray-400">
+
+            <x-table>
+                <x-table.thead>
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Question
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            Action
+                        </th>
+                    </tr>
+                </x-table.thead>
+
+                <tbody>
+                    @foreach ($archivedQuestions as $item)
+                        <x-table.tr>
+                            <x-table.td>
+                                {{ $item->question }}
+                            </x-table.td>
+
+                            <x-table.td>
+
+
+                                <x-form :action="route('question.restore', $item)" patch>
+                                    <button type="submit" class="text-blue-500 hover:underline">
+                                        Restore
+                                    </button>
+                                </x-form>
+
+
+                            </x-table.td>
+                        </x-table.tr>
+                    @endforeach
+                </tbody>
+
+            </x-table>
+        </div>
+
+
+
 
     </x-container>
 </x-app-layout>

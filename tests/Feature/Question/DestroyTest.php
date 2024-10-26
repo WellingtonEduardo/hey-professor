@@ -12,8 +12,8 @@ it(
         actingAs($user);
 
         $question = Question::factory()
-        ->for($user, 'createdBy')
-        ->create(['draft' => true]);
+            ->for($user, 'createdBy')
+            ->create(['draft' => true]);
 
         delete(route('question.destroy', $question))
             ->assertRedirect();
