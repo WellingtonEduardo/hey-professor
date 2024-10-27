@@ -14,11 +14,7 @@ class CallbackController extends Controller
     public function __invoke(): RedirectResponse
     {
 
-        $driver = Socialite::driver('github');
-
-        $githubUser = (app()->environment('local'))
-            ? $driver->stateless()->user()
-            : $driver->user();
+        $githubUser = Socialite::driver('github')->user();
 
         $user = User::updateOrCreate(
             ['nickname' => $githubUser->getNickname(), 'email' => $githubUser->getEmail()],
